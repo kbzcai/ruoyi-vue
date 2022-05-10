@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
+import VueResource from 'vue-resource'
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
@@ -38,6 +39,8 @@ import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
 
+import axios from "axios"
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -48,6 +51,9 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+
+Vue.config.productionTip = false
+Vue.prototype.$axios= axios;
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)
@@ -61,6 +67,7 @@ Vue.component('ImagePreview', ImagePreview)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
+Vue.use(VueResource)
 DictData.install()
 
 /**
@@ -80,7 +87,8 @@ Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
+  axios,
   router,
   store,
   render: h => h(App)
-})
+}).$mount('#app')
