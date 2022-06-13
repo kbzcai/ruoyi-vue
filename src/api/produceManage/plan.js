@@ -16,6 +16,13 @@ export function getPlan(id) {
     method: 'get'
   })
 }
+// 查询物料需求详细
+export function getMaterialDetail(id) {
+  return request({
+    url: '/bomManage/bom/detail/' + id,
+    method: 'get'
+  })
+}
 
 // 新增计划管理
 export function addPlan(data) {

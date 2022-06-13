@@ -39,7 +39,7 @@ export function getInfo() {
 }
 
 // 退出方法
-export function logout() {
+export function logout()   {
   return request({
     url: '/logout',
     method: 'post'

@@ -52,26 +52,26 @@
             <div class="plcData">
               <span class="plc">工作站{{ index + 1 }}——A工位：{{ item.numA }}
                  <template v-if="item.stateA == '1'">
-                   <img :src="require('@/assets/station_pic/greenlight.png')" alt="">
+                   <img :src="require('@/assets/station_pic/green_light.png')" alt="">
                  </template>
                 <template v-else-if="item.stateA == '2'">
-                  <img :src="require('@/assets/station_pic/yellowlight.png')" alt="">
+                  <img :src="require('@/assets/station_pic/yellow_light.gif')" alt="">
                 </template>
                 <template v-else-if="item.stateA == '3'">
-                  <img :src="require('@/assets/station_pic/redlight.png')" alt="">
+                  <img :src="require('@/assets/station_pic/red_light.gif')" alt="">
                 </template>
               </span>
             </div>
             <div class="plcData">
               <span class="plc">工作站{{ index + 1 }}——B工位：{{ item.numB }}
                  <template v-if="item.stateB == '1'">
-                   <img :src="require('@/assets/station_pic/greenlight.png')" alt="">
+                   <img :src="require('@/assets/station_pic/green_light.png')" alt="">
                  </template>
                 <template v-else-if="item.stateB == '2'">
-                  <img :src="require('@/assets/station_pic/yellowlight.png')" alt="">
+                  <img :src="require('@/assets/station_pic/yellow_light.gif')" alt="">
                 </template>
                 <template v-else-if="item.stateB == '3'">
-                  <img :src="require('@/assets/station_pic/redlight.png')" alt="">
+                  <img :src="require('@/assets/station_pic/red_light.gif')" alt="">
                 </template>
               </span>
             </div>
@@ -79,12 +79,6 @@
         </el-card>
       </el-col>
     </el-row>
-    <div style="position: fixed;bottom: 60px;right: 50px; z-index: 100;cursor: pointer;">
-      <span style="height:100px; line-height:100px; display:block; color:#FFF; text-align:center;">
-        <el-image :src="require('@/assets/station_pic/left.png')" alt="" @click="goto">
-        </el-image>
-      </span>
-    </div>
   </div>
 </template>
 
@@ -114,9 +108,6 @@ export default {
     this.getPlcData();
   },
   methods: {
-    goto() {
-      this.$router.push({path: '/dashboard2'})
-    },
     open1() {
       let msg = ""
       for (let i = 0; i < this.viewArr.length; i++) {
@@ -148,7 +139,7 @@ export default {
             _this.viewArr[i].numB = response[i].prodNumB
           }
         }
-      });
+    });
       // this.$axios.get('http://localhost:8181/mesPlc/getNum').then(function (response) {
       //   console.log(response.data)
       //   for (let i = 10; i < response.data.length; i++) {

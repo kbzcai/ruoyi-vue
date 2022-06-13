@@ -53,7 +53,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['produceManage:plan:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -64,7 +65,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['produceManage:plan:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -75,7 +77,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['produceManage:plan:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -85,16 +88,17 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['produceManage:plan:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="planList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="计划id" align="center" prop="id" />
-      <el-table-column label="产品型号" align="center" prop="productNo" />
-      <el-table-column label="计划号" align="center" prop="planNo" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="计划id" align="center" prop="id"/>
+      <el-table-column label="产品型号" align="center" prop="productNo"/>
+      <el-table-column label="计划号" align="center" prop="planNo"/>
       <el-table-column label="计划时间" align="center" prop="planDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.planDate, '{y}-{m}-{d}') }}</span>
@@ -105,29 +109,48 @@
           <dict-tag :options="dict.type.mes_planSchedule" :value="scope.row.planSchedule"/>
         </template>
       </el-table-column>
-      <el-table-column label="计划数量" align="center" prop="planNum" />
-      <el-table-column label="实际数量" align="center" prop="actualNum" />
-      <el-table-column label="焊接完成数量" align="center" prop="weldingFinishNum" />
-      <el-table-column label="不合格数量" align="center" prop="failNum" />
+      <el-table-column label="计划数量" align="center" prop="planNum"/>
+      <el-table-column label="实际数量" align="center" prop="actualNum"/>
+      <el-table-column label="焊接完成数量" align="center" prop="weldingFinishNum"/>
+      <el-table-column label="不合格数量" align="center" prop="failNum"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="materialDetail(scope.row)"
+            v-hasPermi="['bomManage:bom:detail']"
+          >物料需求详情
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['produceManage:plan:edit']"
-          >修改</el-button>
+          >修改
+          </el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['produceManage:plan:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-dialog title="物料所需数量" :visible.sync="dialogTableVisible" width="80%">
+      <el-table :data="requireDetail">
+        <el-table-column align="center" property="stationNo" label="工位号" width="150"></el-table-column>
+        <el-table-column align="center" property="materialNo" label="物料编号" width="250"></el-table-column>
+        <el-table-column align="center" property="materialDesc" label="物料描述" width="350"></el-table-column>
+        <el-table-column align="center" property="productNum" label="数量(件)" width="100"></el-table-column>
+      </el-table>
+    </el-dialog>
 
     <pagination
       v-show="total>0"
@@ -141,13 +164,13 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="产品型号" prop="productNo">
-          <el-input v-model="form.productNo" placeholder="请输入产品型号" />
+          <el-input v-model="form.productNo" placeholder="请输入产品型号"/>
         </el-form-item>
         <el-form-item label="订单编号" prop="orderNo">
-          <el-input v-model="form.orderNo" placeholder="请输入订单编号" />
+          <el-input v-model="form.orderNo" placeholder="请输入订单编号"/>
         </el-form-item>
         <el-form-item label="计划号" prop="planNo">
-          <el-input v-model="form.planNo" placeholder="请输入计划号" />
+          <el-input v-model="form.planNo" placeholder="请输入计划号"/>
         </el-form-item>
         <el-form-item label="计划时间" prop="planDate">
           <el-date-picker clearable
@@ -168,18 +191,19 @@
           </el-select>
         </el-form-item>
         <el-form-item label="计划数量" prop="planNum">
-          <el-input v-model="form.planNum" placeholder="请输入计划数量" />
+          <el-input v-model="form.planNum" placeholder="请输入计划数量"/>
         </el-form-item>
         <el-form-item label="实际数量" prop="actualNum">
-          <el-input v-model="form.actualNum" placeholder="请输入实际数量" />
+          <el-input v-model="form.actualNum" placeholder="请输入实际数量"/>
         </el-form-item>
         <el-form-item label="焊接完成数量" prop="weldingFinishNum">
-          <el-input v-model="form.weldingFinishNum" placeholder="请输入焊接完成数量" />
+          <el-input v-model="form.weldingFinishNum" placeholder="请输入焊接完成数量"/>
         </el-form-item>
         <el-form-item label="不合格数量" prop="failNum">
-          <el-input v-model="form.failNum" placeholder="请输入不合格数量" />
+          <el-input v-model="form.failNum" placeholder="请输入不合格数量"/>
         </el-form-item>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -189,7 +213,7 @@
 </template>
 
 <script>
-import { listPlan, getPlan, delPlan, addPlan, updatePlan } from "@/api/produceManage/plan";
+import {listPlan, getPlan, delPlan, addPlan, updatePlan, getMaterialDetail} from "@/api/produceManage/plan";
 
 export default {
   name: "Plan",
@@ -227,9 +251,17 @@ export default {
       },
       // 表单参数
       form: {},
+      // 物资需求详细
+      requireDetail: [{
+        id: '',
+        stationNo: '',
+        materialNo: '',
+        materialDesc: '',
+        productNum: ''
+      }],
       // 表单校验
-      rules: {
-      }
+      rules: {},
+      dialogTableVisible: false,
     };
   },
   created() {
@@ -295,7 +327,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -303,6 +335,17 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加计划管理";
+    },
+    materialDetail(row) {
+      this.dialogTableVisible = true;
+      const id = row.id || this.ids
+      getMaterialDetail(id).then(response => {
+        this.requireDetail = response.rows;
+        for (let i = 0; i < response.rows.length; i++) {
+          response.rows[i].productNum = response.rows[i].productNum * row.planNum
+        }
+      });
+      console.log(this.requireDetail)
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -337,12 +380,13 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除计划管理编号为"' + ids + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除计划管理编号为"' + ids + '"的数据项？').then(function () {
         return delPlan(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
